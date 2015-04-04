@@ -13,12 +13,13 @@ def parse_lines(lines):
     top_level = re.compile('^\w')
     blank_line = re.compile('^\s*$')
     tree = {}
-    
+    sub_tree = []
+
     cur_tree_name = None
     for line in lines:
         if top_level.match(line):
             if cur_tree_name != None:
-                tree[cur_tree_name] = sub_tree
+                tree[cur_tree_name] = sorted(sub_tree)
 
             cur_tree_name = line
             sub_tree = []
@@ -26,16 +27,19 @@ def parse_lines(lines):
             pass
         else:
             sub_tree.append(line)
-    
+
+    if cur_tree_name != None:
+        tree[cur_tree_name] = sorted(sub_tree)
+
     return tree
 
 def tree_to_string(tree, eol = "\n"):
-    str = ''
+    tree_string = ''
     for key, val in sorted(tree.iteritems()):
-        str += key + eol
+        tree_string += key + eol
         for item in val:
-            str += item + eol
-    return str
+            tree_string += item + eol
+    return tree_string
 
 if __name__ == '__main__':
     lines = get_lines()
