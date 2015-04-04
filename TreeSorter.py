@@ -11,30 +11,36 @@ def get_lines():
 
 def parse_lines(lines):
     top_level = re.compile('^\w')
-    tree_separator = re.compile('^\s*$')
+    blank_line = re.compile('^\s*$')
     tree = {}
     
+    cur_tree_name = None
     for line in lines:
         if top_level.match(line):
+            if cur_tree_name != None:
+                tree[cur_tree_name] = sub_tree
+
             cur_tree_name = line
-            cur_tree = []
-        elif tree_separator.match(line):
-            tree[cur_tree_name] = cur_tree
+            sub_tree = []
+        elif blank_line.match(line):
+            pass
         else:
-            cur_tree.append(line)
+            sub_tree.append(line)
     
     return tree
 
-def print_tree(tree):
+def tree_to_string(tree, eol = "\n"):
+    str = ''
     for key, val in sorted(tree.iteritems()):
-        print key
+        str += key + eol
         for item in val:
-            print item
-        print
-    
+            str += item + eol
+    return str
+
 if __name__ == '__main__':
     lines = get_lines()
 
     tree = parse_lines(lines)
     
-    print_tree(tree)
+    str = tree_to_string(tree)
+    print str
