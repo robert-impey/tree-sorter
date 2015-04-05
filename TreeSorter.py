@@ -9,42 +9,57 @@ def get_lines():
         lines.append(line.rstrip())
     return lines
 
-def parse_lines(lines):
-    top_level = re.compile('^\w')
-    blank_line = re.compile('^\s*$')
-    tree = {}
-    sub_tree = []
+class Tree:
+    def __init__(self, lines, indent = ''):
+        self.lines = lines
+        self.indent = indent
 
-    cur_tree_name = None
-    for line in lines:
-        if top_level.match(line):
-            if cur_tree_name != None:
-                tree[cur_tree_name] = sorted(sub_tree)
+    def get_lines_until_same_indent(self):
+        lines_at_current_indent = []
+        
+        indent_re = re.compile("^%s\s+" % self.indent)
+        for line in self.lines[1:]:
+            if indent_re.match(line):
+                lines_at_current_indent.append(line)
+            else:
+                break
+        
+        return lines_at_current_indent
 
-            cur_tree_name = line
-            sub_tree = []
-        elif blank_line.match(line):
-            pass
-        else:
-            sub_tree.append(line)
+    def get_title(self):
+        return self.lines[0].strip()
 
-    if cur_tree_name != None:
-        tree[cur_tree_name] = sorted(sub_tree)
+    def get_count(self):
+        return 0
 
-    return tree
+    def get_sub_trees(self):
+        sub_trees = []
+        previous_indent = self.indent
+        leading_white_space_re = re.compile('^(\s*)')
+        cur_sub_tree_lines = []
+        for line in self.get_lines_until_same_indent():
+            current_indent = leading_white_space_re.search(line).group(0)
 
-def tree_to_string(tree, eol = "\n"):
-    tree_string = ''
-    for key, val in sorted(tree.iteritems()):
-        tree_string += key + eol
-        for item in val:
-            tree_string += item + eol
-    return tree_string
+            if len(previous_indent) == len(current_indent):
+                cur_sub_tree_lines.append(lines)
+            else:
+                sub_trees.append(Tree(cur_sub_tree_lines))
+
+            previous_indent = current_indent
+        
+        sub_trees.append(Tree(cur_sub_tree_lines))
+
+        return sub_trees
+
+    def to_string(self, eol = "\n"):
+        tree_string = self.get_title() + eol
+        for sub_tree in self.get_sub_trees():
+            tree_string += sub_tree.to_string() 
+        return tree_string
 
 if __name__ == '__main__':
     lines = get_lines()
 
-    tree = parse_lines(lines)
+    tree = Tree(lines)
     
-    str = tree_to_string(tree)
-    print str
+    print tree.to_string()
