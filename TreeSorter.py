@@ -9,6 +9,28 @@ def get_lines():
         lines.append(line.rstrip())
     return lines
 
+def current_line_is_deeper(previous_line, current_line):
+    return len(previous_line) < len(current_line)
+
+def current_line_is_shallower(previous_line, current_line):
+    return len(previous_line) > len(current_line)
+
+def build_tree(lines):
+    parent_tree = Tree(None)
+    parent_trees = []
+    previous_line = ''
+
+    for current_line in lines:
+        current_tree = Tree(line)
+
+        if current_line_is_shallower(previous_line, current_line):
+            previous_tree = parents.pop()
+        elif current_line_is_deeper(previous_line, current_line):
+            parents.append(previous_tree)
+
+        else:
+            previous_tree.add_sub_tree(current_tree)
+
 class Tree:
     def __init__(self, lines, indent = ''):
         self.lines = lines
