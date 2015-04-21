@@ -9,57 +9,68 @@ def get_lines():
         lines.append(line.rstrip())
     return lines
 
+def lines_to_tree(lines):
+    tree = Tree()
+
+    tree_stack = [tree]
+    
+    previous_indentation = ''
+    
+    leading_white_space_re = re.compile('^(\s*)(\S+)')
+
+    for line in lines:
+
+        m = leading_white_space_re.match(line)
+        if m:
+            indentation = m.group(1)
+            text = m.group(2)
+            
+            new_tree = Tree(text)
+
+            parent_tree = tree_stack.pop()
+
+            if len(indentation) < len(previous_indentation):
+                pass
+            elif len(indentation) > len(previous_indentation):
+                tree_stack.append(parent_tree)
+                tree_stack.append(new_tree)
+            else:
+                tree_stack.append(parent_tree)
+
+            parent_tree.add_sub_tree(new_tree)
+
+            previous_indentation = indentation
+
+    return tree
+
 class Tree:
-    def __init__(self, lines, indent = ''):
-        self.lines = lines
-        self.indent = indent
+    def __init__(self, text = None):
+        self.text = text
+        self.sub_trees = []
 
-    def get_lines_until_same_indent(self):
-        lines_at_current_indent = []
-        
-        indent_re = re.compile("^%s\s+" % self.indent)
-        for line in self.lines[1:]:
-            if indent_re.match(line):
-                lines_at_current_indent.append(line)
-            else:
-                break
-        
-        return lines_at_current_indent
-
-    def get_title(self):
-        return self.lines[0].strip()
-
-    def get_count(self):
-        return 0
-
+    def get_text(self):
+        return self.text
+    
     def get_sub_trees(self):
-        sub_trees = []
-        previous_indent = self.indent
-        leading_white_space_re = re.compile('^(\s*)')
-        cur_sub_tree_lines = []
-        for line in self.get_lines_until_same_indent():
-            current_indent = leading_white_space_re.search(line).group(0)
+        return self.sub_trees
 
-            if len(previous_indent) == len(current_indent):
-                cur_sub_tree_lines.append(lines)
-            else:
-                sub_trees.append(Tree(cur_sub_tree_lines))
+    def add_sub_tree(self, new_tree):
+        return self.sub_trees.append(new_tree)
 
-            previous_indent = current_indent
+    def to_string(self, eol = "\n", indentation = '', tab = "\t"):
+        if self.get_text() == None:
+            tree_string = ''
+        else:
+            tree_string = indentation + self.get_text() + eol
         
-        sub_trees.append(Tree(cur_sub_tree_lines))
-
-        return sub_trees
-
-    def to_string(self, eol = "\n"):
-        tree_string = self.get_title() + eol
         for sub_tree in self.get_sub_trees():
-            tree_string += sub_tree.to_string() 
+            tree_string += sub_tree.to_string(indentation = indentation + tab) 
+        
         return tree_string
 
 if __name__ == '__main__':
     lines = get_lines()
 
-    tree = Tree(lines)
+    tree = lines_to_tree(lines)
     
     print tree.to_string()
