@@ -16,7 +16,7 @@ def lines_to_tree(lines):
     
     previous_indentation = ''
     
-    leading_white_space_re = re.compile('^(\s*)(\S+)')
+    leading_white_space_re = re.compile('^(\s*)(.+)')
 
     for line in lines:
 
