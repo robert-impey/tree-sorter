@@ -6,18 +6,14 @@ import unittest
 class TestEmpty(unittest.TestCase):
 	def setUp(self):
 		self.lines = []
-		self.tree = Tree(self.lines)
+		self.tree = lines_to_tree(self.lines)
 
 	def test_tree(self):
 		self.assertEqual({}, self.tree)
 
-	def test_tree_title(self):
-		expected_title = ''
-		self.assertEqual(expected_title, self.tree.get_title())
-
-	def test_tree_count(self):
-		expected_tree_count = 0
-		self.assertEqual(expected_tree_count, self.tree.get_count())
+	def test_tree_text(self):
+		expected_text = ''
+		self.assertEqual(expected_text, self.tree.get_text())
 
 	def test_string(self):
 		self.assertEqual('', self.tree.to_string())
@@ -28,15 +24,11 @@ class TestOneDeep(unittest.TestCase):
 		self.lines.append('foo')
 		self.lines.append("\tgaz")
 		self.lines.append("\tbar")
-		self.tree = Tree(self.lines)
+		self.tree = lines_to_tree(self.lines)
 	
-	def test_tree_title(self):
-		expected_title = 'foo'
-		self.assertEqual(expected_title, self.tree.get_title())
-
-	def test_tree_count(self):
-		expected_tree_count = 3
-		self.assertEqual(expected_tree_count, self.tree.get_count())
+	def test_tree_text(self):
+		expected_text = 'foo'
+		self.assertEqual(expected_text, self.tree.get_text())
 
 	def test_tree_string(self):
 		expected_string = """foo
@@ -54,11 +46,7 @@ class TestTwoTreesOneDeep(unittest.TestCase):
 		self.lines.append('1')
 		self.lines.append("\t2")
 		self.lines.append("\t1")
-		self.tree = Tree(self.lines)
-
-	def test_tree_count(self):
-		expected_tree_count = 6
-		self.assertEqual(expected_tree_count, self.tree.get_count())
+		self.tree = lines_to_tree(self.lines)
 
 	def test_tree_string(self):
 		expected_string = """1
@@ -80,12 +68,8 @@ class TestTwoDeep(unittest.TestCase):
 		self.lines.append("\ta")
 		self.lines.append("\t\t2")
 		self.lines.append("\t\t1")
-		self.tree = Tree(self.lines)
+		self.tree = lines_to_tree(self.lines)
 		self.tree_string = self.tree.to_string()
-
-	def test_tree_count(self):
-		expected_tree_count = 7
-		self.assertEqual(expected_tree_count, self.tree.get_count())
 
 	def test_tree_string(self):
 		expected_string = """A
