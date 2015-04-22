@@ -12,7 +12,7 @@ class TestEmpty(unittest.TestCase):
 		self.assertEqual({}, self.tree)
 
 	def test_tree_text(self):
-		expected_text = ''
+		expected_text = None
 		self.assertEqual(expected_text, self.tree.get_text())
 
 	def test_string(self):
