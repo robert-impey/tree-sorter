@@ -2,6 +2,7 @@
 
 import fileinput
 import re
+from functools import total_ordering
 
 def get_lines():
     lines = []
@@ -43,6 +44,7 @@ def lines_to_tree(lines):
 
     return tree
 
+@total_ordering
 class Tree:
     def __init__(self, text = None):
         self.text = text
@@ -52,7 +54,7 @@ class Tree:
         return self.text
     
     def get_sub_trees(self):
-        return self.sub_trees
+        return sorted(self.sub_trees)
 
     def add_sub_tree(self, new_tree):
         return self.sub_trees.append(new_tree)
@@ -68,9 +70,15 @@ class Tree:
         
         return tree_string
 
+    def __eq__(self, other):
+        return self.to_string() == other.to_string()
+
+    def __lt__(self, other):
+        return self.get_text() < other.get_text()
+
 if __name__ == '__main__':
     lines = get_lines()
 
     tree = lines_to_tree(lines)
     
-    print tree.to_string()
+    print(tree.to_string()),
