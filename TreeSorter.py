@@ -61,12 +61,16 @@ class Tree:
 
     def to_string(self, eol = "\n", indentation = '', tab = "\t"):
         if self.get_text() == None:
+            current_text = ''
+            current_indentation = ''
             tree_string = ''
         else:
-            tree_string = indentation + self.get_text() + eol
+            current_text = self.get_text()
+            current_indentation = tab + indentation
+            tree_string = current_indentation + current_text + eol
         
         for sub_tree in self.get_sub_trees():
-            tree_string += sub_tree.to_string(indentation = indentation + tab) 
+            tree_string += sub_tree.to_string(indentation = current_indentation) 
         
         return tree_string
 
