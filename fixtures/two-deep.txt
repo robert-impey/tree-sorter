@@ -1,12 +1,12 @@
 1 one
-    i first
-    ii second
-    iii third
+    i one
+    ii one
+    iii one
 2 two
-    i first
-    ii second
-    iii third
+    i two
+    ii two
+    iii two
 3 three
-    i first
-    ii second
-    iii third
+    i three
+    ii three
+    iii three

@@ -18,11 +18,24 @@ class TestEmpty(unittest.TestCase):
 
     def test_string(self):
         self.assertEqual('', self.tree.to_string())
-    
+
+class TestSingleTree(unittest.TestCase):
+    def setUp(self):
+        self.lines = ['foo']
+        self.tree = lines_to_tree(self.lines)
+
+    def test_text(self):
+        expected_text = 'foo'
+        self.assertEqual(expected_text, self.tree.get_text())
+
+    def test_string(self):
+        expected_string = "foo\n"
+        self.assertEqual(expected_string, self.tree.to_string())
+
 class TestOneDeep(unittest.TestCase):
     def setUp(self):
         self.lines = []
-        self.lines.append('foo')
+        self.lines.append("foo")
         self.lines.append("\tgaz")
         self.lines.append("\tbar")
         self.tree = lines_to_tree(self.lines)
@@ -32,10 +45,7 @@ class TestOneDeep(unittest.TestCase):
         self.assertEqual(expected_text, self.tree.get_text())
 
     def test_tree_string(self):
-        expected_string = """foo
-    bar
-    gaz
-"""
+        expected_string = "foo\n\tbar\n\tgaz"
         self.assertEqual(expected_string, self.tree.to_string())
 
 class TestTwoTreesOneDeep(unittest.TestCase):
@@ -82,6 +92,34 @@ class TestTwoDeep(unittest.TestCase):
         2
 """
         self.assertEqual(expected_string, self.tree.to_string())
+
+class TestSorting(unittest.TestCase):
+    def setUp(self):
+        self.fruits = Tree('fruits')
+        self.apple = Tree('apple')
+        self.banana = Tree('banana')
+        self.coconut = Tree('coconut')
+   
+    def assert_that_sub_trees_are_fruits_in_order(self, sub_trees):
+        self.assertEqual('apple', sub_trees[0].get_text())
+        self.assertEqual('banana', sub_trees[1].get_text())
+        self.assertEqual('coconut', sub_trees[2].get_text())
+
+    def test_adding_in_order(self):
+        self.fruits.add_sub_tree(self.apple)
+        self.fruits.add_sub_tree(self.banana)
+        self.fruits.add_sub_tree(self.coconut)
+
+        sub_trees = self.fruits.get_sub_trees()
+        self.assert_that_sub_trees_are_fruits_in_order(sub_trees)
+
+    def test_adding_out_of_order(self):
+        self.fruits.add_sub_tree(self.banana)
+        self.fruits.add_sub_tree(self.coconut)
+        self.fruits.add_sub_tree(self.apple)
+
+        sub_trees = self.fruits.get_sub_trees()
+        self.assert_that_sub_trees_are_fruits_in_order(sub_trees)
 
 if __name__ == '__main__':
     unittest.main()

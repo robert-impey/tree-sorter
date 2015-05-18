@@ -1,88 +1,101 @@
 #!/usr/bin/env python
 
+from functools import total_ordering
 import fileinput
 import re
-from functools import total_ordering
+
+indentation_chars = 4
 
 def get_lines():
     lines = []
     for line in fileinput.input():
-        lines.append(line.rstrip())
+        lines.append(line)
     return lines
 
 def lines_to_tree(lines):
-    tree = Tree()
+    root = Tree()
 
-    tree_stack = [tree]
-    
-    previous_indentation = ''
-    
-    leading_white_space_re = re.compile('^(\s*)(.+)')
+    tree_stack = [(root, 0)]
+
+    leading_white_space_re = re.compile('^(\s*)(.*)')
 
     for line in lines:
-
         m = leading_white_space_re.match(line)
         if m:
             indentation = m.group(1)
-            text = m.group(2)
-            
+            text = m.group(2).rstrip()
+
             new_tree = Tree(text)
 
-            parent_tree = tree_stack.pop()
+            current_depth = len(indentation)
 
-            if len(indentation) < len(previous_indentation):
-                pass
-            elif len(indentation) > len(previous_indentation):
-                tree_stack.append(parent_tree)
-                tree_stack.append(new_tree)
-            else:
-                tree_stack.append(parent_tree)
+            while tree_stack:
+                (popped_tree, popped_child_depth) = tree_stack.pop()
+                if (current_depth == popped_child_depth):
+                    parent_tree = popped_tree
+                    parent_child_depth = popped_child_depth
+                    break
 
             parent_tree.add_sub_tree(new_tree)
+            tree_stack.append((parent_tree, parent_child_depth))
 
-            previous_indentation = indentation
+            child_depth = current_depth + indentation_chars
 
-    return tree
+            tree_stack.append((new_tree, child_depth))
+
+    return root 
 
 @total_ordering
 class Tree:
-    def __init__(self, text = None):
+    def __init__(self, text = ''): # Why isn't the default text None?
+        text = text.rstrip()
+        if len(text) == 0:
+            text = None
+
         self.text = text
         self.sub_trees = []
 
     def get_text(self):
         return self.text
-    
+
     def get_sub_trees(self):
-        return sorted(self.sub_trees)
+        return sorted(self.sub_trees) # How often are these sorted?
 
     def add_sub_tree(self, new_tree):
-        return self.sub_trees.append(new_tree)
+        return self.sub_trees.append(new_tree) # Why not insert in order?
 
-    def to_string(self, eol = "\n", indentation = '', tab = "\t"):
+    def to_string(self, eol = "\n", indentation = '', tab = "    "):
         if self.get_text() == None:
             current_text = ''
-            current_indentation = ''
+            child_indentation = ''
             tree_string = ''
         else:
             current_text = self.get_text()
-            current_indentation = tab + indentation
-            tree_string = current_indentation + current_text + eol
-        
+            tree_string = indentation + current_text + eol
+            child_indentation = indentation + tab
+
         for sub_tree in self.get_sub_trees():
-            tree_string += sub_tree.to_string(indentation = current_indentation) 
-        
+            tree_string += sub_tree.to_string(indentation = child_indentation, eol = eol, tab = tab) 
+
         return tree_string
 
+    def __str__(self):
+        if self.get_text() == None:
+            return '"No Text"'
+        return self.get_text()
+
     def __eq__(self, other):
+        if other == None: 
+            return False
+
         return self.to_string() == other.to_string()
 
     def __lt__(self, other):
-        return self.get_text() < other.get_text()
+        return self.to_string() < other.to_string()
 
 if __name__ == '__main__':
     lines = get_lines()
 
     tree = lines_to_tree(lines)
-    
+
     print(tree.to_string()),
