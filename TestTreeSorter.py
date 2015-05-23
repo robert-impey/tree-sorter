@@ -25,7 +25,7 @@ class TestSingleTree(unittest.TestCase):
         self.tree = lines_to_tree(self.lines)
 
     def test_text(self):
-        expected_text = 'foo'
+        expected_text = None
         self.assertEqual(expected_text, self.tree.get_text())
 
     def test_string(self):
@@ -36,27 +36,28 @@ class TestOneDeep(unittest.TestCase):
     def setUp(self):
         self.lines = []
         self.lines.append("foo")
-        self.lines.append("\tgaz")
-        self.lines.append("\tbar")
+        self.lines.append("    gaz")
+        self.lines.append("    bar")
         self.tree = lines_to_tree(self.lines)
     
     def test_tree_text(self):
-        expected_text = 'foo'
+	"""The root tree should not have any text."""
+        expected_text = None
         self.assertEqual(expected_text, self.tree.get_text())
 
     def test_tree_string(self):
-        expected_string = "foo\n\tbar\n\tgaz"
+        expected_string = "foo\n    bar\n    gaz\n"
         self.assertEqual(expected_string, self.tree.to_string())
 
 class TestTwoTreesOneDeep(unittest.TestCase):
     def setUp(self):
         self.lines = []
         self.lines.append('2')
-        self.lines.append("\t2")
-        self.lines.append("\t1")
+        self.lines.append("    2")
+        self.lines.append("    1")
         self.lines.append('1')
-        self.lines.append("\t2")
-        self.lines.append("\t1")
+        self.lines.append("    2")
+        self.lines.append("    1")
         self.tree = lines_to_tree(self.lines)
 
     def test_tree_string(self):
@@ -73,12 +74,12 @@ class TestTwoDeep(unittest.TestCase):
     def setUp(self):
         self.lines = []
         self.lines.append('A')
-        self.lines.append("\tb")
-        self.lines.append("\t\t2")
-        self.lines.append("\t\t1")
-        self.lines.append("\ta")
-        self.lines.append("\t\t2")
-        self.lines.append("\t\t1")
+        self.lines.append("    b")
+        self.lines.append("        2")
+        self.lines.append("        1")
+        self.lines.append("    a")
+        self.lines.append("        2")
+        self.lines.append("        1")
         self.tree = lines_to_tree(self.lines)
         self.tree_string = self.tree.to_string()
 
