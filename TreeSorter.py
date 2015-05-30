@@ -17,7 +17,7 @@ def get_lines(file_name = None):
         for line in in_file:
             lines.append(line)
     
-    return lines
+    return [line.rstrip() for line in lines]
 
 def lines_to_tree(lines):
     root = Tree()
