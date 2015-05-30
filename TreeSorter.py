@@ -1,15 +1,22 @@
 #!/usr/bin/env python
 
 from functools import total_ordering
+from sys import argv
 import fileinput
 import re
 
 indentation_chars = 4
 
-def get_lines():
+def get_lines(file_name = None):
     lines = []
-    for line in fileinput.input():
-        lines.append(line)
+    if (file_name == None):
+        for line in fileinput.input():
+            lines.append(line)
+    else:
+        in_file = open(file_name)
+        for line in in_file:
+            lines.append(line)
+    
     return lines
 
 def lines_to_tree(lines):
@@ -94,7 +101,11 @@ class Tree:
         return self.to_string() < other.to_string()
 
 if __name__ == '__main__':
-    lines = get_lines()
+    if len(argv) == 2:
+        file_name = argv[1]
+        lines = get_lines(file_name)
+    else:
+        lines = get_lines()
 
     tree = lines_to_tree(lines)
 
