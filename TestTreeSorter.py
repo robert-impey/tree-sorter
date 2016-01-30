@@ -41,7 +41,7 @@ class TestOneDeep(unittest.TestCase):
         self.tree = lines_to_tree(self.lines)
     
     def test_tree_text(self):
-	"""The root tree should not have any text."""
+        """The root tree should not have any text."""
         expected_text = None
         self.assertEqual(expected_text, self.tree.get_text())
 
