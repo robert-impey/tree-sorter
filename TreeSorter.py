@@ -13,9 +13,9 @@ def get_lines(file_name = None):
         for line in fileinput.input():
             lines.append(line)
     else:
-        in_file = open(file_name)
-        for line in in_file:
-            lines.append(line)
+        with open(file_name) as in_file:
+            for line in in_file:
+                lines.append(line)
     
     return [line.rstrip() for line in lines]
 
