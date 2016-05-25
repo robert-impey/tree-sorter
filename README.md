@@ -1,6 +1,6 @@
 # tree-sorter
 
-Program for sorting indented text.
+Program for sorting indented text, treating blocks indented to the same level as groups.
 
 e.g.
 
