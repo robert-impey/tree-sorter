@@ -109,4 +109,4 @@ if __name__ == '__main__':
 
     tree = lines_to_tree(lines)
 
-    print(tree.to_string()),
+    print((tree.to_string()), end=' ')
