@@ -1,6 +1,6 @@
 # tree-sorter
 
-[![Build Status](https://travis-ci.org/robert-impey/tree-sorter.png)](https://travis-ci.org/robert-impey/tree-sorter)
+[![Build Status](https://travis-ci.org/robert-impey/tree-sorter.svg?branch=master)](https://travis-ci.org/robert-impey/tree-sorter)
 
 Program for sorting indented text, treating blocks indented to the same level as groups.
 
