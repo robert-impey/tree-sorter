@@ -33,6 +33,8 @@
     <Content Include="fixtures\one-deep.txt" />
     <Content Include="fixtures\two-deep-singles.txt" />
     <Content Include="fixtures\two-deep-unsorted.txt" />
+    <Content Include="fixtures\two-deep-with-duplicates.txt" />
+    <Content Include="fixtures\two-deep-with-duplicates-unsorted.txt" />
     <Content Include="fixtures\two-deep-with-gaps.txt" />
     <Content Include="fixtures\two-deep.txt" />
   </ItemGroup>

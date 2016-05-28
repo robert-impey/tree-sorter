@@ -154,5 +154,13 @@ class TestTreesSeparatedByGaps(unittest.TestCase):
     def test_remove_gaps(self):
         self.assertEqual(self.two_deep.to_string(), self.two_deep_with_gaps.to_string())
 
+class TestTreesWithDuplicates(unittest.TestCase):
+    def setUp(self):
+        self.two_deep = lines_to_tree(get_lines('fixtures/two-deep-with-duplicates.txt'))
+        self.two_deep_unsorted = lines_to_tree(get_lines('fixtures/two-deep-with-duplicates-unsorted.txt'))
+
+    def test_sort_with_duplicates(self):
+        self.assertEqual(self.two_deep.to_string(), self.two_deep_unsorted.to_string())
+
 if __name__ == '__main__':
     unittest.main()

@@ -95,9 +95,16 @@ class Tree:
         if other == None: 
             return False
 
+        if self.text != other.text:
+            return False
+
         return self.to_string() == other.to_string()
 
     def __lt__(self, other):
+        if self.text != None and other.text != None:
+            if self.text < other.text:
+                return True
+        
         return self.to_string() < other.to_string()
 
 if __name__ == '__main__':
