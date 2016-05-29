@@ -13,9 +13,11 @@ def get_lines(file_name):
 
     with open(file_name) as in_file:
         for line in in_file:
-            lines.append(line)
+            line = line.rstrip()
+            if len(line) > 0:
+                lines.append(line)
     
-    return [line.rstrip() for line in lines]
+    return lines
 
 def lines_to_tree(lines):
     root = Tree()
@@ -52,11 +54,7 @@ def lines_to_tree(lines):
 
 @total_ordering
 class Tree:
-    def __init__(self, text = ''): # Why isn't the default text None?
-        text = text.rstrip()
-        if len(text) == 0:
-            text = None
-
+    def __init__(self, text = None): 
         self.text = text
         self.sub_trees = []
 
@@ -69,19 +67,35 @@ class Tree:
     def add_sub_tree(self, new_tree):
         return self.sub_trees.append(new_tree) # Why not insert in order?
 
-    def to_string(self, eol = "\n", indentation = '', tab = "    "):
-        if self.get_text() == None:
+    def is_top_level(self):
+        return self.text == None
+
+    def to_string(self, eol = "\n", indentation = '', 
+        tab = "    ", separate_top_level = False):
+        if self.is_top_level():
             current_text = ''
             child_indentation = ''
             tree_string = ''
+            post_tree_new_line = separate_top_level
         else:
             current_text = self.get_text()
             tree_string = indentation + current_text + eol
             child_indentation = indentation + tab
+            post_tree_new_line = False
 
+        first = True
         for sub_tree in self.get_sub_trees():
-            tree_string += sub_tree.to_string(indentation = child_indentation, eol = eol, tab = tab) 
+            if first:
+                first = False
+            else:
+                if post_tree_new_line:
+                   tree_string += eol
 
+            tree_string += sub_tree.to_string(
+                indentation = child_indentation,
+                eol = eol, tab = tab, 
+                separate_top_level = separate_top_level) 
+ 
         return tree_string
 
     def __str__(self):
@@ -108,14 +122,19 @@ class Tree:
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('Sort trees')
 
-    parser.add_argument('TreeFile', help = 'The file containing the tree.')
+    parser.add_argument('TreeFile', 
+        help = 'The file containing the tree.')
+    parser.add_argument('--SeparateTopLevel', 
+        help = 'Separate top level trees with a blank line.', 
+        action='store_true')
 
     args = parser.parse_args()
 
     file_name = args.TreeFile
+    separate_top_level = args.SeparateTopLevel
 
     lines = get_lines(file_name)
 
     tree = lines_to_tree(lines)
 
-    print((tree.to_string()), end=' ')
+    print((tree.to_string(separate_top_level = separate_top_level)), end=' ')

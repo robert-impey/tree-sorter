@@ -55,7 +55,6 @@ class TestTwoTreesOneDeep(unittest.TestCase):
         self.lines.append('2')
         self.lines.append("    2")
         self.lines.append("    1")
-        self.lines.append('    ')
         self.lines.append('1')
         self.lines.append("    2")
         self.lines.append("    1")
@@ -81,7 +80,6 @@ class TestTwoDeep(unittest.TestCase):
         self.lines.append("    Aa")
         self.lines.append("        A2")
         self.lines.append("        A1")
-        self.lines.append('    ')
         self.lines.append('B')
         self.lines.append("    Bb")
         self.lines.append("        B2")
@@ -92,7 +90,7 @@ class TestTwoDeep(unittest.TestCase):
         self.tree = lines_to_tree(self.lines)
         self.tree_string = self.tree.to_string()
 
-    def test_tree_string(self):
+    def test_two_deep_tree_string(self):
         expected_string = """A
     Aa
         A1
@@ -140,27 +138,39 @@ class TestSorting(unittest.TestCase):
 
 class TestTreesInFiles(unittest.TestCase):
     def setUp(self):
-        self.two_deep = lines_to_tree(get_lines('fixtures/two-deep.txt'))
+        with open ('fixtures/two-deep.txt') as target_file:
+            self.target = target_file.read()
         self.two_deep_unsorted = lines_to_tree(get_lines('fixtures/two-deep-unsorted.txt'))
 
     def test_remove_gaps(self):
-        self.assertEqual(self.two_deep.to_string(), self.two_deep_unsorted.to_string())
+        self.assertEqual(self.two_deep_unsorted.to_string(), self.target)
 
 class TestTreesSeparatedByGaps(unittest.TestCase):
     def setUp(self):
-        self.two_deep = lines_to_tree(get_lines('fixtures/two-deep.txt'))
+        with open ('fixtures/two-deep.txt') as target_file:
+            self.target = target_file.read()
         self.two_deep_with_gaps = lines_to_tree(get_lines('fixtures/two-deep-with-gaps.txt'))
 
-    def test_remove_gaps(self):
-        self.assertEqual(self.two_deep.to_string(), self.two_deep_with_gaps.to_string())
+    def test_remove_gaps_from_files(self):
+        self.assertEqual(self.two_deep_with_gaps.to_string(), self.target)
 
 class TestTreesWithDuplicates(unittest.TestCase):
     def setUp(self):
-        self.two_deep = lines_to_tree(get_lines('fixtures/two-deep-with-duplicates.txt'))
+        with open ('fixtures/two-deep-with-duplicates.txt') as target_file:
+            self.target = target_file.read()
         self.two_deep_unsorted = lines_to_tree(get_lines('fixtures/two-deep-with-duplicates-unsorted.txt'))
 
     def test_sort_with_duplicates(self):
-        self.assertEqual(self.two_deep.to_string(), self.two_deep_unsorted.to_string())
+        self.assertEqual(self.two_deep_unsorted.to_string(), self.target)
+
+class TestTreesOutputWithGaps(unittest.TestCase):
+    def setUp(self):
+        with open ('fixtures/two-deep-with-gaps-sorted.txt') as target_file:
+            self.target = target_file.read()
+        self.two_deep_unsorted = lines_to_tree(get_lines('fixtures/two-deep-with-gaps.txt'))
+
+    def test_sort_and_separate(self):
+        self.assertEqual(self.two_deep_unsorted.to_string(separate_top_level = True), self.target)
 
 if __name__ == '__main__':
     unittest.main()
