@@ -43,17 +43,65 @@ Trees of grouped data can be of arbitrary depth.
 
 ### Examples
 
+The input might contain a few trees in no particular order:
+
+    $ cat fixtures/two-deep-with-gaps.txt
+    1 one
+        i one
+        iii one
+        ii one
+
+    3 three
+        iii three
+        i three
+        ii three
+
+    2 two
+        ii two
+        iii two
+        i two
+
     $ ./TreeSorter.py ~/docs/todo.txt
 
-Reads the contents of the text file and prints out the trees in order.
+The tool reads the contents of the text file and prints out the trees in order.
 
-    $ ./TreeSorter.py ~/docs/todo.txt --SeparateTopLevel
+    $ ./TreeSorter.py fixtures/two-deep-with-gaps.txt
+    1 one
+        i one
+        ii one
+        iii one
+    2 two
+        i two
+        ii two
+        iii two
+    3 three
+        i three
+        ii three
+        iii three
 
-Separates "top level" trees with a blank line. This is useful for fast navigation in vim.
+The --SeparateTopLevl puts a blank line between "top level" trees. This is useful for navigating nimbly in vim.
+
+    $ ./TreeSorter.py fixtures/two-deep-with-gaps.txt --SeparateTopLevel
+    1 one
+        i one
+        ii one
+        iii one
+
+    2 two
+        i two
+        ii two
+        iii two
+
+    3 three
+        i three
+        ii three
+        iii three
+        
+The --InPlace flag writes the sorted trees on top of the input file. 
 
     $ ./TreeSorter.py ~/docs/todo.txt --SeparateTopLevel --InPlace
 
-Writes the sorted trees on top of the input file. The tool creates a back up file with the extension ".bak" first. Obviously, you've already got other back ups anyway. This is free software. I take no respobsibility for anything that happens to your files. See license.
+In this case, the tool creates a back up file with the extension ".bak" first. Obviously, you've already got other back ups anyway. This is free software. I take no respobsibility for anything that happens to your files. See license.
 
 ## License
 
