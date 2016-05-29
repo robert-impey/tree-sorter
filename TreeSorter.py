@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 
-from functools import total_ordering
-from sys import argv
-import fileinput
-import re
 import argparse
+import re
 import shutil
+from functools import total_ordering
 
 indentation_chars = 4
+
 
 def get_lines(file_name):
     lines = []
@@ -17,8 +16,9 @@ def get_lines(file_name):
             line = line.rstrip()
             if len(line) > 0:
                 lines.append(line)
-    
+
     return lines
+
 
 def lines_to_tree(lines):
     root = Tree()
@@ -39,7 +39,7 @@ def lines_to_tree(lines):
 
             while tree_stack:
                 (popped_tree, popped_child_depth) = tree_stack.pop()
-                if (current_depth == popped_child_depth):
+                if current_depth == popped_child_depth:
                     parent_tree = popped_tree
                     parent_child_depth = popped_child_depth
                     break
@@ -51,11 +51,12 @@ def lines_to_tree(lines):
 
             tree_stack.append((new_tree, child_depth))
 
-    return root 
+    return root
+
 
 @total_ordering
 class Tree:
-    def __init__(self, text = None): 
+    def __init__(self, text=None):
         self.text = text
         self.sub_trees = []
 
@@ -63,16 +64,16 @@ class Tree:
         return self.text
 
     def get_sub_trees(self):
-        return sorted(self.sub_trees) # How often are these sorted?
+        return sorted(self.sub_trees)  # How often are these sorted?
 
     def add_sub_tree(self, new_tree):
-        return self.sub_trees.append(new_tree) # Why not insert in order?
+        return self.sub_trees.append(new_tree)  # Why not insert in order?
 
     def is_top_level(self):
-        return self.text == None
+        return self.text is None
 
-    def to_string(self, eol = "\n", indentation = '', 
-        tab = "    ", separate_top_level = False):
+    def to_string(self, eol="\n", indentation='',
+                  tab="    ", separate_top_level=False):
         if self.is_top_level():
             current_text = ''
             child_indentation = ''
@@ -90,22 +91,22 @@ class Tree:
                 first = False
             else:
                 if post_tree_new_line:
-                   tree_string += eol
+                    tree_string += eol
 
             tree_string += sub_tree.to_string(
-                indentation = child_indentation,
-                eol = eol, tab = tab, 
-                separate_top_level = separate_top_level) 
- 
+                indentation=child_indentation,
+                eol=eol, tab=tab,
+                separate_top_level=separate_top_level)
+
         return tree_string
 
     def __str__(self):
-        if self.get_text() == None:
+        if self.get_text() is None:
             return '"No Text"'
         return self.get_text()
 
     def __eq__(self, other):
-        if other == None: 
+        if other is None:
             return False
 
         if self.text != other.text:
@@ -114,23 +115,24 @@ class Tree:
         return self.to_string() == other.to_string()
 
     def __lt__(self, other):
-        if self.text != None and other.text != None:
+        if self.text is not None and other.text is not None:
             if self.text < other.text:
                 return True
-        
+
         return self.to_string() < other.to_string()
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('Sort trees')
 
-    parser.add_argument('TreeFile', 
-        help = 'The file containing the tree.')
-    parser.add_argument('--SeparateTopLevel', 
-        help = 'Separate top level trees with a blank line.', 
-        action='store_true')
+    parser.add_argument('TreeFile',
+                        help='The file containing the tree.')
+    parser.add_argument('--SeparateTopLevel',
+                        help='Separate top level trees with a blank line.',
+                        action='store_true')
     parser.add_argument('--InPlace',
-        help = 'Write the output on top of the input file.',
-        action='store_true')
+                        help='Write the output on top of the input file.',
+                        action='store_true')
 
     args = parser.parse_args()
 
@@ -138,18 +140,17 @@ if __name__ == '__main__':
     separate_top_level = args.SeparateTopLevel
     in_place = args.InPlace
 
-    if (in_place):
+    if in_place:
         backup = '{0}.bak'.format(file_name)
         shutil.copy2(file_name, backup)
 
     lines = get_lines(file_name)
 
     tree = lines_to_tree(lines)
-    
-    output = tree.to_string(separate_top_level = separate_top_level)
+
+    output = tree.to_string(separate_top_level=separate_top_level)
     if in_place:
         with open(file_name, 'w') as output_file:
             output_file.write(output)
     else:
         print(output, end=' ')
-  

@@ -1,4 +1,6 @@
 *.pyc
 .*.swp
 build
+.idea/workspace.xml
+.idea/tasks.xml
 
