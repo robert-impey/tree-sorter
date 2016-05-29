@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/robert-impey/tree-sorter.svg?branch=master)](https://travis-ci.org/robert-impey/tree-sorter)
 
-Program for sorting space indented text, treating blocks indented to the same level as groups.
+Program for sorting space indented text, treating blocks indented to the same level as groups. This is useful for grouping items in a "to do" list.
 
 e.g.
 
@@ -43,7 +43,7 @@ Trees of grouped data can be of arbitrary depth.
 
 ### Examples
 
-The input might contain a few trees in no particular order:
+The input file might contain a few trees in no particular order:
 
     $ cat fixtures/two-deep-with-gaps.txt
     1 one
@@ -61,8 +61,6 @@ The input might contain a few trees in no particular order:
         iii two
         i two
 
-    $ ./TreeSorter.py ~/docs/todo.txt
-
 The tool reads the contents of the text file and prints out the trees in order.
 
     $ ./TreeSorter.py fixtures/two-deep-with-gaps.txt
@@ -79,7 +77,7 @@ The tool reads the contents of the text file and prints out the trees in order.
         ii three
         iii three
 
-The --SeparateTopLevl puts a blank line between "top level" trees. This is useful for navigating nimbly in vim.
+The --SeparateTopLevel puts a blank line between "top level" trees. This is useful for navigating between groups nimbly in vim.
 
     $ ./TreeSorter.py fixtures/two-deep-with-gaps.txt --SeparateTopLevel
     1 one
