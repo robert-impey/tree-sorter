@@ -4,18 +4,16 @@ from functools import total_ordering
 from sys import argv
 import fileinput
 import re
+import argparse
 
 indentation_chars = 4
 
-def get_lines(file_name = None):
+def get_lines(file_name):
     lines = []
-    if (file_name == None):
-        for line in fileinput.input():
+
+    with open(file_name) as in_file:
+        for line in in_file:
             lines.append(line)
-    else:
-        with open(file_name) as in_file:
-            for line in in_file:
-                lines.append(line)
     
     return [line.rstrip() for line in lines]
 
@@ -108,11 +106,15 @@ class Tree:
         return self.to_string() < other.to_string()
 
 if __name__ == '__main__':
-    if len(argv) == 2:
-        file_name = argv[1]
-        lines = get_lines(file_name)
-    else:
-        lines = get_lines()
+    parser = argparse.ArgumentParser('Sort trees')
+
+    parser.add_argument('TreeFile', help = 'The file containing the tree.')
+
+    args = parser.parse_args()
+
+    file_name = args.TreeFile
+
+    lines = get_lines(file_name)
 
     tree = lines_to_tree(lines)
 
