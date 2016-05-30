@@ -43,6 +43,8 @@ def lines_to_tree(lines):
                     parent_tree = popped_tree
                     parent_child_depth = popped_child_depth
                     break
+                else:
+                    popped_tree.finalise()
 
             parent_tree.add_sub_tree(new_tree)
             tree_stack.append((parent_tree, parent_child_depth))
@@ -50,6 +52,9 @@ def lines_to_tree(lines):
             child_depth = current_depth + indentation_chars
 
             tree_stack.append((new_tree, child_depth))
+
+    for (tree, _) in tree_stack:
+        tree.finalise()
 
     return root
 
@@ -63,8 +68,11 @@ class Tree:
     def get_text(self):
         return self.text
 
+    def finalise(self):
+        self.sub_trees.sort()
+
     def get_sub_trees(self):
-        return sorted(self.sub_trees)  # How often are these sorted?
+        return self.sub_trees
 
     def add_sub_tree(self, new_tree):
         return self.sub_trees.append(new_tree)  # Why not insert in order?
@@ -75,7 +83,6 @@ class Tree:
     def to_string(self, eol="\n", indentation='',
                   tab="    ", separate_top_level=False):
         if self.is_top_level():
-            current_text = ''
             child_indentation = ''
             tree_string = ''
             post_tree_new_line = separate_top_level

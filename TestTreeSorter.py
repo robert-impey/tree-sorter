@@ -139,6 +139,8 @@ class TestSorting(unittest.TestCase):
         self.fruits.add_sub_tree(self.coconut)
         self.fruits.add_sub_tree(self.apple)
 
+        self.fruits.finalise()
+
         sub_trees = self.fruits.get_sub_trees()
         self.assert_that_sub_trees_are_fruits_in_order(sub_trees)
 
