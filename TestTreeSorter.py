@@ -15,7 +15,7 @@ class TestEmpty(unittest.TestCase):
 
     def test_tree_text(self):
         expected_text = None
-        self.assertEqual(expected_text, self.tree.get_text())
+        self.assertEqual(expected_text, self.tree.text)
 
     def test_string(self):
         self.assertEqual('', self.tree.to_string())
@@ -28,7 +28,7 @@ class TestSingleTree(unittest.TestCase):
 
     def test_text(self):
         expected_text = None
-        self.assertEqual(expected_text, self.tree.get_text())
+        self.assertEqual(expected_text, self.tree.text)
 
     def test_string(self):
         expected_string = "foo\n"
@@ -46,7 +46,7 @@ class TestOneDeep(unittest.TestCase):
     def test_tree_text(self):
         """The root tree should not have any text."""
         expected_text = None
-        self.assertEqual(expected_text, self.tree.get_text())
+        self.assertEqual(expected_text, self.tree.text)
 
     def test_tree_string(self):
         expected_string = "foo\n    bar\n    gaz\n"
@@ -122,9 +122,9 @@ class TestSorting(unittest.TestCase):
         self.coconut = Tree('coconut')
 
     def assert_that_sub_trees_are_fruits_in_order(self, sub_trees):
-        self.assertEqual('apple', sub_trees[0].get_text())
-        self.assertEqual('banana', sub_trees[1].get_text())
-        self.assertEqual('coconut', sub_trees[2].get_text())
+        self.assertEqual('apple', sub_trees[0].text)
+        self.assertEqual('banana', sub_trees[1].text)
+        self.assertEqual('coconut', sub_trees[2].text)
 
     def test_adding_in_order(self):
         self.fruits.add_sub_tree(self.apple)

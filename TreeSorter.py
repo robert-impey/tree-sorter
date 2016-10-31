@@ -62,11 +62,12 @@ def lines_to_tree(lines):
 @total_ordering
 class Tree:
     def __init__(self, text=None):
-        self.text = text
+        self._text = text
         self.sub_trees = []
 
-    def get_text(self):
-        return self.text
+    @property
+    def text(self):
+        return self._text
 
     def finalise(self):
         self.sub_trees.sort()
@@ -78,7 +79,7 @@ class Tree:
         return self.sub_trees.append(new_tree)  # Why not insert in order?
 
     def is_top_level(self):
-        return self.text is None
+        return self._text is None
 
     def to_string(self, eol="\n", indentation='',
                   tab="    ", separate_top_level=False):
@@ -87,7 +88,7 @@ class Tree:
             tree_string = ''
             post_tree_new_line = separate_top_level
         else:
-            current_text = self.get_text()
+            current_text = self.text
             tree_string = indentation + current_text + eol
             child_indentation = indentation + tab
             post_tree_new_line = False
@@ -108,22 +109,22 @@ class Tree:
         return tree_string
 
     def __str__(self):
-        if self.get_text() is None:
+        if self.text is None:
             return '"No Text"'
-        return self.get_text()
+        return self.text
 
     def __eq__(self, other):
         if other is None:
             return False
 
-        if self.text != other.text:
+        if self._text != other.text:
             return False
 
         return self.to_string() == other.to_string()
 
     def __lt__(self, other):
-        if self.text is not None and other.text is not None:
-            if self.text < other.text:
+        if self._text is not None and other.text is not None:
+            if self._text < other.text:
                 return True
 
         return self.to_string() < other.to_string()
