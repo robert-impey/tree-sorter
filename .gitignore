@@ -2,4 +2,5 @@
 .*.swp
 build
 __pycache__/
-
+UpgradeLog*.htm
+Backup*
