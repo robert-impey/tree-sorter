@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from TreeSorter import *
+from treesorting import *
 import unittest
 
 
@@ -183,7 +183,3 @@ class TestTreesOutputWithGaps(unittest.TestCase):
 
     def test_sort_and_separate(self):
         self.assertEqual(self.two_deep_unsorted.to_string(separate_top_level=True), self.target)
-
-
-if __name__ == '__main__':
-    unittest.main()

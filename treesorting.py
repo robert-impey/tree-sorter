@@ -1,8 +1,4 @@
-#!/usr/bin/env python3
-
-import argparse
 import re
-import shutil
 from functools import total_ordering
 
 indentation_chars = 4
@@ -59,6 +55,14 @@ def lines_to_tree(lines):
     return root
 
 
+def are_lines_sorted_tree(lines):
+    return True
+
+
+def is_file_sorted_tree(filename):
+    return False
+
+
 @total_ordering
 class Tree:
     def __init__(self, text=None):
@@ -108,6 +112,11 @@ class Tree:
 
         return tree_string
 
+    def get_lines(self):
+        eol = "\n"
+        tree_string = self.to_string(eol)
+        return tree_string.split(eol)
+
     def __str__(self):
         if self.text is None:
             return '"No Text"'
@@ -128,37 +137,3 @@ class Tree:
                 return True
 
         return self.to_string() < other.to_string()
-
-
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser('Sort trees')
-
-    parser.add_argument('TreeFile',
-                        help='The file containing the tree.')
-    parser.add_argument('--SeparateTopLevel',
-                        help='Separate top level trees with a blank line.',
-                        action='store_true')
-    parser.add_argument('--InPlace',
-                        help='Write the output on top of the input file.',
-                        action='store_true')
-
-    args = parser.parse_args()
-
-    file_name = args.TreeFile
-    separate_top_level = args.SeparateTopLevel
-    in_place = args.InPlace
-
-    if in_place:
-        backup = '{0}.bak'.format(file_name)
-        shutil.copy2(file_name, backup)
-
-    lines = get_lines(file_name)
-
-    tree = lines_to_tree(lines)
-
-    output = tree.to_string(separate_top_level=separate_top_level)
-    if in_place:
-        with open(file_name, 'w') as output_file:
-            output_file.write(output)
-    else:
-        print(output, end=' ')
