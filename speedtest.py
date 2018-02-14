@@ -6,32 +6,34 @@ Time the sorting part.
 Print statistics on the times.
 """
 
-import argparse
 import time
 from statistics import mean
 
-from treesorting import *
 from randomtrees import *
+from treesorting import *
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser('Tree sorting Stress Test')
 
     parser.add_argument('--Iterations',
                         help='The number of iterations.',
-                        type=int)
+                        type=int,
+                        default=100)
     parser.add_argument('--Depth',
                         help='The depth of the trees.',
-                        type=int)
+                        type=int,
+                        default=3)
     parser.add_argument('--Items',
                         help='The number of items for each node of the tree.',
-                        type=int)
+                        type=int,
+                        default=10)
 
     args = parser.parse_args()
 
     remaining_iterations = args.Iterations
 
     times = []
-    while remaining_iterations >= 0:
+    while remaining_iterations > 0:
         remaining_iterations -= 1
 
         random_tree_lines = generate_random_tree_lines(args.Depth, args.Items)

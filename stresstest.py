@@ -15,10 +15,12 @@ if __name__ == '__main__':
 
     parser.add_argument('--Depth',
                         help='The depth of the trees.',
-                        type=int)
+                        type=int,
+                        default=3)
     parser.add_argument('--Items',
                         help='The number of items for each node of the tree.',
-                        type=int)
+                        type=int,
+                        default=10)
 
     args = parser.parse_args()
 
