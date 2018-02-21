@@ -7,6 +7,17 @@ Generates random trees
 import argparse
 
 
+def generate_random_item(length=8, chars="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"):
+    item = ""
+
+    for i in range(length):
+        index = random.randint(0, len(chars) - 1)
+
+        item += chars[index]
+
+    return item
+
+
 def generate_random_tree_lines(depth, items, current_indentation=''):
     lines = []
 
@@ -14,7 +25,7 @@ def generate_random_tree_lines(depth, items, current_indentation=''):
         remaining_items_to_add = items
 
         while remaining_items_to_add > 0:
-            lines.append('{0}{1}'.format(current_indentation, random.random()))
+            lines.append('{0}{1}'.format(current_indentation, generate_random_item()))
 
             remaining_items_to_add -= 1
             sub_lines = generate_random_tree_lines(depth - 1, items, current_indentation + '    ')
