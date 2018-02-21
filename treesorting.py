@@ -4,6 +4,29 @@ from functools import total_ordering
 indentation_chars = 4
 
 
+class ParsedLine:
+    def __init__(self, orig):
+        self._orig = orig
+
+        leading_white_space_re = re.compile('^( *)(.*)')
+
+        m = leading_white_space_re.match(self._orig)
+        if m:
+            indentation = m.group(1)
+            self._depth = len(indentation) // indentation_chars
+            self._text = m.group(2).rstrip()
+        else:
+            raise ValueError('Unable to parse "%s"!' % self._orig)
+
+    @property
+    def text(self):
+        return self._text
+
+    @property
+    def depth(self):
+        return self._depth
+
+
 def get_lines(file_name):
     lines = []
 
@@ -21,33 +44,28 @@ def lines_to_tree(lines):
 
     tree_stack = [(root, 0)]
 
-    leading_white_space_re = re.compile('^(\s*)(.*)')
-
     for line in lines:
-        m = leading_white_space_re.match(line)
-        if m:
-            indentation = m.group(1)
-            text = m.group(2).rstrip()
+        parsed_line = ParsedLine(line)
 
-            new_tree = Tree(text)
+        new_tree = Tree(parsed_line.text)
 
-            current_depth = len(indentation)
+        current_depth = parsed_line.depth
 
-            while tree_stack:
-                (popped_tree, popped_child_depth) = tree_stack.pop()
-                if current_depth == popped_child_depth:
-                    parent_tree = popped_tree
-                    parent_child_depth = popped_child_depth
-                    break
-                else:
-                    popped_tree.finalise()
+        while tree_stack:
+            (popped_tree, popped_child_depth) = tree_stack.pop()
+            if current_depth == popped_child_depth:
+                parent_tree = popped_tree
+                parent_child_depth = popped_child_depth
+                break
+            else:
+                popped_tree.finalise()
 
-            parent_tree.add_sub_tree(new_tree)
-            tree_stack.append((parent_tree, parent_child_depth))
+        parent_tree.add_sub_tree(new_tree)
+        tree_stack.append((parent_tree, parent_child_depth))
 
-            child_depth = current_depth + indentation_chars
+        child_depth = current_depth + 1
 
-            tree_stack.append((new_tree, child_depth))
+        tree_stack.append((new_tree, child_depth))
 
     for (tree, _) in tree_stack:
         tree.finalise()
@@ -56,11 +74,35 @@ def lines_to_tree(lines):
 
 
 def are_lines_sorted_tree(lines):
+    previous_items_by_depth = []
+    previous_line_depth = 0
+
+    for line in lines:
+        parsed_line = ParsedLine(line)
+
+        if parsed_line.depth < previous_line_depth:
+            old_items = previous_items_by_depth
+            previous_items_by_depth = []
+            for i in range(0, parsed_line.depth):
+                previous_items_by_depth.append(old_items[i])
+
+        if parsed_line.depth == len(previous_items_by_depth):
+            previous_items_by_depth.append(parsed_line.text)
+        elif parsed_line.depth < len(previous_items_by_depth):
+            if parsed_line.text < previous_items_by_depth[parsed_line.depth]:
+                return False
+            else:
+                previous_items_by_depth[parsed_line.depth] = parsed_line.text
+        else:
+            raise ValueError('Skipped indentation depth!')
+
+        previous_line_depth = parsed_line.depth
+
     return True
 
 
 def is_file_sorted_tree(filename):
-    return False
+    return are_lines_sorted_tree(get_lines(filename))
 
 
 @total_ordering

@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 
+"""
+Tells us if a tree file is in order.
+"""
+
 import argparse
 from treesorting import *
 
