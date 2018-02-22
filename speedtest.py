@@ -27,6 +27,10 @@ if __name__ == '__main__':
                         help='The number of items for each node of the tree.',
                         type=int,
                         default=10)
+    parser.add_argument('--Length',
+                        help='The length of each item.',
+                        type=int,
+                        default=8)
 
     args = parser.parse_args()
 
@@ -36,7 +40,7 @@ if __name__ == '__main__':
     while remaining_iterations > 0:
         remaining_iterations -= 1
 
-        random_tree_lines = generate_random_tree_lines(args.Depth, args.Items)
+        random_tree_lines = generate_random_tree_lines(args.Depth, args.Items, args.Length)
 
         start = time.process_time()
 
