@@ -5,3 +5,4 @@ __pycache__/
 UpgradeLog*.htm
 Backup*
 *.xml___jb_tmp___
+.pytest_cache/
