@@ -96,3 +96,13 @@ class TestTreeFilesWithGapsInOrder(unittest.TestCase):
 class TestTreeFilesWithGapsOutOfOrder(unittest.TestCase):
     def test_assessment(self):
         self.assertFalse(is_file_sorted_tree('fixtures/two-deep-with-gaps.txt'))
+
+
+class TestTreeFilesInOrderAfterDrop(unittest.TestCase):
+    def test_assessment(self):
+        self.assertTrue(is_file_sorted_tree('fixtures/in-order-after-depth-drop.txt'))
+
+
+class TestTreeFilesOutOfOrderAfterDrop(unittest.TestCase):
+    def test_assessment(self):
+        self.assertFalse(is_file_sorted_tree('fixtures/out-of-order-after-depth-drop.txt'))
