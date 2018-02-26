@@ -31,6 +31,10 @@ if __name__ == '__main__':
                         help='The length of each item.',
                         type=int,
                         default=8)
+    parser.add_argument('--Alphabet',
+                        help='The alphabet of allowed characters.',
+                        type=str,
+                        default=alphabet)
 
     args = parser.parse_args()
 
@@ -40,7 +44,11 @@ if __name__ == '__main__':
     while remaining_iterations > 0:
         remaining_iterations -= 1
 
-        random_tree_lines = generate_random_tree_lines(args.Depth, args.Items, args.Length)
+        random_tree_lines = generate_random_tree_lines(
+            args.Depth,
+            args.Items,
+            args.Length,
+            args.Alphabet)
 
         start = time.process_time()
 

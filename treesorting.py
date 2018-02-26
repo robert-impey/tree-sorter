@@ -83,7 +83,7 @@ def are_lines_sorted_tree(lines):
         if parsed_line.depth < previous_line_depth:
             old_items = previous_items_by_depth
             previous_items_by_depth = []
-            for i in range(0, parsed_line.depth):
+            for i in range(0, parsed_line.depth + 1):
                 previous_items_by_depth.append(old_items[i])
 
         if parsed_line.depth == len(previous_items_by_depth):
@@ -157,7 +157,9 @@ class Tree:
     def get_lines(self):
         eol = "\n"
         tree_string = self.to_string(eol)
-        return tree_string.split(eol)
+        for line in tree_string.split(eol):
+            if len(line) > 0:
+                yield line
 
     def __str__(self):
         if self.text is None:
