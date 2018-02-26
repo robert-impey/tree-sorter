@@ -6,7 +6,6 @@ Test that the output lines are in the correct order.
 Repeat until failure or the process is killed.
 """
 
-import argparse
 from treesorting import *
 from randomtrees import *
 
@@ -25,11 +24,19 @@ if __name__ == '__main__':
                         help='The length of each item.',
                         type=int,
                         default=8)
+    parser.add_argument('--Alphabet',
+                        help='The alphabet of allowed characters.',
+                        type=str,
+                        default=alphabet)
 
     args = parser.parse_args()
 
     while True:
-        random_tree_lines = generate_random_tree_lines(args.Depth, args.Items, args.Length)
+        random_tree_lines = generate_random_tree_lines(
+            args.Depth,
+            args.Items,
+            args.Length,
+            args.Alphabet)
 
         tree = lines_to_tree(random_tree_lines)
 
