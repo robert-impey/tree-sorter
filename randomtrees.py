@@ -10,6 +10,7 @@ import argparse
 
 alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
+
 def generate_random_item(length=8, chars=alphabet):
     item = ""
 
