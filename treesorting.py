@@ -106,7 +106,7 @@ class Tree:
         return self.to_string() < other.to_string()
 
 
-def get_lines(file_name):
+def get_lines(file_name: str) -> Sequence[str]:
     lines = []
 
     with open(file_name) as in_file:
@@ -152,7 +152,7 @@ def lines_to_tree(lines: Sequence[str]) -> Tree:
     return root
 
 
-def are_lines_sorted_tree(lines):
+def are_lines_sorted_tree(lines: Sequence[str]) -> bool:
     previous_items_by_depth = []
     previous_line_depth = 0
 
@@ -180,7 +180,7 @@ def are_lines_sorted_tree(lines):
     return True
 
 
-def is_file_sorted_tree(filename):
+def is_file_sorted_tree(filename: str) -> bool:
     return are_lines_sorted_tree(get_lines(filename))
 
 
