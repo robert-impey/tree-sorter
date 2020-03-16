@@ -1,5 +1,6 @@
 import re
 from functools import total_ordering
+from typing import Sequence
 
 indentation_chars = 4
 
@@ -25,84 +26,6 @@ class ParsedLine:
     @property
     def depth(self):
         return self._depth
-
-
-def get_lines(file_name):
-    lines = []
-
-    with open(file_name) as in_file:
-        for line in in_file:
-            line = line.rstrip()
-            if len(line) > 0:
-                lines.append(line)
-
-    return lines
-
-
-def lines_to_tree(lines):
-    root = Tree()
-
-    tree_stack = [(root, 0)]
-
-    for line in lines:
-        parsed_line = ParsedLine(line)
-
-        new_tree = Tree(parsed_line.text)
-
-        current_depth = parsed_line.depth
-
-        while tree_stack:
-            (popped_tree, popped_child_depth) = tree_stack.pop()
-            if current_depth == popped_child_depth:
-                parent_tree = popped_tree
-                parent_child_depth = popped_child_depth
-                break
-            else:
-                popped_tree.finalise()
-
-        parent_tree.add_sub_tree(new_tree)
-        tree_stack.append((parent_tree, parent_child_depth))
-
-        child_depth = current_depth + 1
-
-        tree_stack.append((new_tree, child_depth))
-
-    for (tree, _) in tree_stack:
-        tree.finalise()
-
-    return root
-
-
-def are_lines_sorted_tree(lines):
-    previous_items_by_depth = []
-    previous_line_depth = 0
-
-    for line in lines:
-        parsed_line = ParsedLine(line)
-
-        if parsed_line.depth < previous_line_depth:
-            old_items = previous_items_by_depth
-            previous_items_by_depth = []
-            for i in range(0, parsed_line.depth + 1):
-                previous_items_by_depth.append(old_items[i])
-
-        if parsed_line.depth == len(previous_items_by_depth):
-            previous_items_by_depth.append(parsed_line.text)
-        elif parsed_line.depth < len(previous_items_by_depth):
-            if parsed_line.text < previous_items_by_depth[parsed_line.depth]:
-                return False
-            else:
-                previous_items_by_depth[parsed_line.depth] = parsed_line.text
-        else:
-            raise ValueError('Skipped indentation depth!')
-
-        previous_line_depth = parsed_line.depth
-
-    return True
-
-
-def is_file_sorted_tree(filename):
-    return are_lines_sorted_tree(get_lines(filename))
 
 
 @total_ordering
@@ -181,3 +104,83 @@ class Tree:
                 return True
 
         return self.to_string() < other.to_string()
+
+
+def get_lines(file_name):
+    lines = []
+
+    with open(file_name) as in_file:
+        for line in in_file:
+            line = line.rstrip()
+            if len(line) > 0:
+                lines.append(line)
+
+    return lines
+
+
+def lines_to_tree(lines: Sequence[str]) -> Tree:
+    root = Tree()
+
+    tree_stack = [(root, 0)]
+
+    for line in lines:
+        parsed_line = ParsedLine(line)
+
+        new_tree = Tree(parsed_line.text)
+
+        current_depth = parsed_line.depth
+
+        while tree_stack:
+            (popped_tree, popped_child_depth) = tree_stack.pop()
+            if current_depth == popped_child_depth:
+                parent_tree = popped_tree
+                parent_child_depth = popped_child_depth
+                break
+            else:
+                popped_tree.finalise()
+
+        parent_tree.add_sub_tree(new_tree)
+        tree_stack.append((parent_tree, parent_child_depth))
+
+        child_depth = current_depth + 1
+
+        tree_stack.append((new_tree, child_depth))
+
+    for (tree, _) in tree_stack:
+        tree.finalise()
+
+    return root
+
+
+def are_lines_sorted_tree(lines):
+    previous_items_by_depth = []
+    previous_line_depth = 0
+
+    for line in lines:
+        parsed_line = ParsedLine(line)
+
+        if parsed_line.depth < previous_line_depth:
+            old_items = previous_items_by_depth
+            previous_items_by_depth = []
+            for i in range(0, parsed_line.depth + 1):
+                previous_items_by_depth.append(old_items[i])
+
+        if parsed_line.depth == len(previous_items_by_depth):
+            previous_items_by_depth.append(parsed_line.text)
+        elif parsed_line.depth < len(previous_items_by_depth):
+            if parsed_line.text < previous_items_by_depth[parsed_line.depth]:
+                return False
+            else:
+                previous_items_by_depth[parsed_line.depth] = parsed_line.text
+        else:
+            raise ValueError('Skipped indentation depth!')
+
+        previous_line_depth = parsed_line.depth
+
+    return True
+
+
+def is_file_sorted_tree(filename):
+    return are_lines_sorted_tree(get_lines(filename))
+
+
