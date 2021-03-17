@@ -1,7 +1,5 @@
 # tree-sorter
 
-[![Build Status](https://travis-ci.org/robert-impey/tree-sorter.svg?branch=master)](https://travis-ci.org/robert-impey/tree-sorter)
-
 Program for sorting space indented text, treating blocks indented to the same level as groups. This is useful for grouping items in a "to do" list.
 
 e.g.
