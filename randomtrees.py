@@ -50,7 +50,7 @@ def generate_random_tree_lines(
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser('Tree sorting Stress Test')
+    parser = argparse.ArgumentParser('Tree sorting Random Trees Test')
 
     parser.add_argument('--Depth',
                         help='The depth of the trees.',
