@@ -8,7 +8,7 @@ import argparse
 from treesorting import *
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser('Sort trees')
+    parser = argparse.ArgumentParser()
 
     parser.add_argument('TreeFile',
                         help='The file containing the tree.')

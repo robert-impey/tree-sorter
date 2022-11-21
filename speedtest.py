@@ -13,7 +13,7 @@ from randomtrees import *
 from treesorting import *
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser('Tree sorting Stress Test')
+    parser = argparse.ArgumentParser()
 
     parser.add_argument('--Iterations',
                         help='The number of iterations.',
