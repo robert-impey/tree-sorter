@@ -1,9 +1,6 @@
 import re
-from argparse import ArgumentParser
 from functools import total_ordering
 from typing import Sequence
-
-from randomtrees import alphabet
 
 indentation_chars = 4
 
