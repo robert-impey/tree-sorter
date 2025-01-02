@@ -30,11 +30,7 @@ if __name__ == '__main__':
     while remaining_iterations > 0:
         remaining_iterations -= 1
 
-        random_tree_lines = generate_random_tree_lines(
-            args.Depth,
-            args.Items,
-            args.Length,
-            args.Alphabet)
+        random_tree_lines = generate_random_tree_lines_from_args(args)
 
         start = time.process_time()
 

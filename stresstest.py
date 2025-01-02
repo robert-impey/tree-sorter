@@ -17,11 +17,7 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     while True:
-        random_tree_lines = generate_random_tree_lines(
-            args.Depth,
-            args.Items,
-            args.Length,
-            args.Alphabet)
+        random_tree_lines = generate_random_tree_lines_from_args(args)
 
         tree = lines_to_tree(random_tree_lines)
 

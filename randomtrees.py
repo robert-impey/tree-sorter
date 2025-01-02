@@ -48,34 +48,39 @@ def generate_random_tree_lines(
 
     return lines
 
+def add_simulation_args(arg_parser: argparse.ArgumentParser):
+    arg_parser.add_argument('--Depth',
+                            help='The depth of the trees.',
+                            type=int,
+                            default=3)
+    arg_parser.add_argument('--Items',
+                            help='The number of items for each node of the tree.',
+                            type=int,
+                            default=10)
+    arg_parser.add_argument('--Length',
+                            help='The length of each item.',
+                            type=int,
+                            default=8)
+    arg_parser.add_argument('--Alphabet',
+                            help='The alphabet of allowed characters.',
+                            type=str,
+                            default=alphabet)
 
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument('--Depth',
-                        help='The depth of the trees.',
-                        type=int,
-                        default=3)
-    parser.add_argument('--Items',
-                        help='The number of items for each node of the tree.',
-                        type=int,
-                        default=10)
-    parser.add_argument('--Length',
-                        help='The length of each item.',
-                        type=int,
-                        default=8)
-    parser.add_argument('--Alphabet',
-                        help='The alphabet of allowed characters.',
-                        type=str,
-                        default=alphabet)
-
-    args = parser.parse_args()
-
-    random_tree_lines = generate_random_tree_lines(
+def generate_random_tree_lines_from_args(args):
+    return generate_random_tree_lines(
         args.Depth,
         args.Items,
         args.Length,
         args.Alphabet)
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+
+    add_simulation_args(parser)
+
+    args = parser.parse_args()
+
+    random_tree_lines = generate_random_tree_lines_from_args(args)
 
     for line in random_tree_lines:
         print(line)
