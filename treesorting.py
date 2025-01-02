@@ -1,4 +1,4 @@
-import re
+from re import compile
 from functools import total_ordering
 from typing import Sequence
 
@@ -9,7 +9,7 @@ class ParsedLine:
     def __init__(self, orig):
         self._orig = orig
 
-        leading_white_space_re = re.compile('^( *)(.*)')
+        leading_white_space_re = compile('^( *)(.*)')
 
         m = leading_white_space_re.match(self._orig)
         if m:
