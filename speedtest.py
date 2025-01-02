@@ -6,11 +6,12 @@ Time the sorting part.
 Print statistics on the times.
 """
 
+import argparse
 import time
 from statistics import mean
 
-from randomtrees import *
-from treesorting import *
+from randomtrees import generate_random_tree_lines_from_args, add_simulation_args
+from treesorting import lines_to_tree
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

@@ -2,7 +2,7 @@
 
 import argparse
 import shutil
-from treesorting import *
+from treesorting import lines_to_tree, get_lines, are_lines_sorted_tree
 
 
 if __name__ == '__main__':

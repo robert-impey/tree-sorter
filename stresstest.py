@@ -6,8 +6,9 @@ Test that the output lines are in the correct order.
 Repeat until failure or the process is killed.
 """
 
-from treesorting import *
-from randomtrees import *
+import argparse
+from treesorting import lines_to_tree, are_lines_sorted_tree
+from randomtrees import generate_random_tree_lines_from_args, add_simulation_args
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 
 import random
+import argparse
 
 """
 Generates random trees
 """
-
-import argparse
 
 alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 

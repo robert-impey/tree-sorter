@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from treesorting import *
 import unittest
+from treesorting import lines_to_tree, get_lines, Tree
 
 
 class TestEmpty(unittest.TestCase):

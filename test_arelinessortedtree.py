@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from treesorting import *
 import unittest
+from treesorting import are_lines_sorted_tree, is_file_sorted_tree
 
 
 class TestEmpty(unittest.TestCase):
