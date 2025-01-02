@@ -12,22 +12,7 @@ from randomtrees import *
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('--Depth',
-                        help='The depth of the trees.',
-                        type=int,
-                        default=3)
-    parser.add_argument('--Items',
-                        help='The number of items for each node of the tree.',
-                        type=int,
-                        default=10)
-    parser.add_argument('--Length',
-                        help='The length of each item.',
-                        type=int,
-                        default=8)
-    parser.add_argument('--Alphabet',
-                        help='The alphabet of allowed characters.',
-                        type=str,
-                        default=alphabet)
+    add_simulation_args(parser)
 
     args = parser.parse_args()
 
