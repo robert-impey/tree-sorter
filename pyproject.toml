@@ -1,9 +1,12 @@
 [project]
 name = "tree-sorter"
 version = "0.1.0"
-description = "Add your description here"
+description = "Sorts trees of information in files"
 readme = "README.md"
 requires-python = ">=3.14"
+dependencies = [
+    "ruff>=0.14.7",
+]
 
 [dependency-groups]
 dev = [
