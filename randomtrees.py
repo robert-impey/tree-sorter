@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-import random
 import argparse
+import random
 
 """
 Generates random trees
@@ -33,7 +33,7 @@ def generate_random_tree_lines(
         remaining_items_to_add = items
 
         while remaining_items_to_add > 0:
-            lines.append('{0}{1}'.format(current_indentation, generate_random_item(length, chars)))
+            lines.append(f'{current_indentation}{generate_random_item(length, chars)}')
 
             remaining_items_to_add -= 1
             sub_lines = generate_random_tree_lines(
@@ -42,8 +42,7 @@ def generate_random_tree_lines(
                 length,
                 chars,
                 current_indentation + '    ')
-            for sub_line in sub_lines:
-                lines.append(sub_line)
+            lines.extend(sub_lines)
 
     return lines
 

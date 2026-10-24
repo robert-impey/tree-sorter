@@ -5,6 +5,7 @@ Tells us if a tree file is in order.
 """
 
 import argparse
+
 from treesorting import is_file_sorted_tree
 
 if __name__ == '__main__':

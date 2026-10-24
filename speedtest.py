@@ -10,7 +10,7 @@ import argparse
 import time
 from statistics import mean
 
-from randomtrees import generate_random_tree_lines_from_args, add_simulation_args
+from randomtrees import add_simulation_args, generate_random_tree_lines_from_args
 from treesorting import lines_to_tree
 
 if __name__ == '__main__':
@@ -43,7 +43,7 @@ if __name__ == '__main__':
 
         times.append(stop - start)
 
-    print("Number of times: {0}".format(len(times)))
-    print("Min time: {0} s".format(min(times)))
-    print("Max time: {0} s".format(max(times)))
-    print("Mean time: {0} s".format(mean(times)))
+    print(f"Number of times: {len(times)}")
+    print(f"Min time: {min(times)} s")
+    print(f"Max time: {max(times)} s")
+    print(f"Mean time: {mean(times)} s")

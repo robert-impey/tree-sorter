@@ -1,6 +1,6 @@
-from re import compile
+from collections.abc import Sequence
 from functools import total_ordering
-from typing import Sequence
+from re import compile
 
 indentation_chars = 4
 
@@ -17,7 +17,7 @@ class ParsedLine:
             self._depth = len(indentation) // indentation_chars
             self._text = m.group(2).rstrip()
         else:
-            raise ValueError('Unable to parse "%s"!' % self._orig)
+            raise ValueError(f'Unable to parse "{self._orig}"!')
 
     @property
     def text(self):
@@ -93,15 +93,16 @@ class Tree:
         if other is None:
             return False
 
-        if self._text != other.text:
-            return False
+        if (self._text is not None and other.text is not None
+                and self._text < other.text):
+            return True
 
         return self.to_string() == other.to_string()
 
     def __lt__(self, other):
-        if self._text is not None and other.text is not None:
-            if self._text < other.text:
-                return True
+        if (self._text is not None and other.text is not None
+                and self._text < other.text):
+            return True
 
         return self.to_string() < other.to_string()
 
@@ -162,7 +163,7 @@ def are_lines_sorted_tree(lines: Sequence[str]) -> bool:
         if parsed_line.depth < previous_line_depth:
             old_items = previous_items_by_depth
             previous_items_by_depth = []
-            for i in range(0, parsed_line.depth + 1):
+            for i in range(parsed_line.depth + 1):
                 previous_items_by_depth.append(old_items[i])
 
         if parsed_line.depth == len(previous_items_by_depth):
@@ -182,4 +183,3 @@ def are_lines_sorted_tree(lines: Sequence[str]) -> bool:
 
 def is_file_sorted_tree(filename: str) -> bool:
     return are_lines_sorted_tree(get_lines(filename))
-

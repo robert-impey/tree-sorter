@@ -2,8 +2,8 @@
 
 import argparse
 import shutil
-from treesorting import lines_to_tree, get_lines, are_lines_sorted_tree
 
+from treesorting import are_lines_sorted_tree, get_lines, lines_to_tree
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -29,7 +29,7 @@ if __name__ == '__main__':
         print('In place sorting requested but already sorted.')
     else:
         if in_place:
-            backup = '{0}.bak'.format(file_name)
+            backup = f'{file_name}.bak'
             shutil.copy2(file_name, backup)
 
         tree = lines_to_tree(lines)

@@ -7,8 +7,9 @@ Repeat until failure or the process is killed.
 """
 
 import argparse
-from treesorting import lines_to_tree, are_lines_sorted_tree
-from randomtrees import generate_random_tree_lines_from_args, add_simulation_args
+
+from randomtrees import add_simulation_args, generate_random_tree_lines_from_args
+from treesorting import are_lines_sorted_tree, lines_to_tree
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
