@@ -5,10 +5,10 @@ description = "Sorts trees of information in files"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
-    "ruff>=0.14.7",
+    "ruff==0.17.2",
 ]
 
 [dependency-groups]
 dev = [
-    "ruff>=0.14,<0.15",
+    "ruff==0.17.2",
 ]
