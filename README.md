@@ -1,5 +1,7 @@
 # tree-sorter
 
+Development has moved to https://github.com/robert-impey/tools/ where I am converting this tool to Dart.
+
 Program for sorting space indented text, treating blocks indented to the same level as groups. This is useful for grouping items in a "to do" list.
 
 e.g.
